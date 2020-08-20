@@ -1,36 +1,9 @@
 import React, { useState, useReducer } from 'react';
 import Todo from './components/Todo';
-
-export const ACTIONS = {
-  ADD_TODO: 'add-todo',
-  TOGGLE_TODO: 'toggle-todo',
-  DELETE_TODO: 'delete-todo'
-}
-
-function reducer(todos, action) {
-  switch (action.type) {
-    case ACTIONS.ADD_TODO:
-      return [...todos, newTodo(action.payload.name)]
-    case ACTIONS.TOGGLE_TODO:
-      return todos.map(todo => {
-        if (todo.id === action.payload.id) {
-          return { ...todo, complete: !todo.complete }
-        }
-          return todo
-      })
-    case ACTIONS.DELETE_TODO:
-      return todos.filter(todo => !todo.complete)
-    default:
-      return todos
-  }
-}
-
-function newTodo(name) {
-  return { id: Date.now(), name: name, complete: false }
-}
+import { reducer, initialState, ACTIONS } from './reducers/reducer';
 
 function App() {
-  const [todos, dispatch] = useReducer(reducer, [])
+  const [todos, dispatch] = useReducer(reducer, initialState)
   const [name, setName] = useState('')
 
   function handleSubmit(e) {
@@ -38,7 +11,7 @@ function App() {
     dispatch({ type: ACTIONS.ADD_TODO, payload: { name: name } })
     setName('')
   }
-
+  
   return (
     <>
     <h1>My Todo List</h1>
