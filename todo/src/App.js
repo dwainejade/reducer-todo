@@ -1,18 +1,10 @@
 import React, { useState, useReducer } from 'react';
-import Todo from './Todo';
+import Todo from './components/Todo';
 
 export const ACTIONS = {
   ADD_TODO: 'add-todo',
   TOGGLE_TODO: 'toggle-todo',
   DELETE_TODO: 'delete-todo'
-}
-
-const todos = {
-  {
-    name: 'Learn about reducers',
-    complete: false,
-    id: 3892987589
-  }
 }
 
 function reducer(todos, action) {
@@ -27,7 +19,7 @@ function reducer(todos, action) {
           return todo
       })
     case ACTIONS.DELETE_TODO:
-      return todos.filter(todo => todo.id !== action.payload.id)
+      return todos.filter(todo => !todo.complete)
     default:
       return todos
   }
@@ -47,16 +39,16 @@ function App() {
     setName('')
   }
 
-  console.log(todos)
-
   return (
     <>
+    <h1>My Todo List</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" value={name} onChange={e => setName(e.target.value)} />
       </form>
       {todos.map(todo => {
         return <Todo key={todo.id} todo={todo} dispatch={dispatch}/>
       })}
+      <button className="clear-btn" onClick={() => dispatch({ type: ACTIONS.DELETE_TODO})}>Clear Completed</button>
     </>
   );
 }
